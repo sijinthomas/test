@@ -1,7 +1,7 @@
 name: Your Workflow Name
 
 on:
- workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   test:
