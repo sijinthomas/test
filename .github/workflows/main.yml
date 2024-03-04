@@ -18,8 +18,8 @@ jobs:
       - name: Use AWS Signing Helper
         run: |
           ./aws_signing_helper credential-process \
-            --certificate ${{ secrets.AWS_CERTIFICATE }} \
-            --private-key ${{ secrets.AWS_PRIVATE_KEY }} \
+            --certificate certificate.pem \
+            --private-key private_key.pem \
             --trust-anchor-arn arn:aws:rolesanywhere:us-east-1:339712756401:trust-anchor/5600bfa3-a51d-470d-8487-cacaa0a3230d \
             --profile-arn arn:aws:rolesanywhere:us-east-1:339712756401:profile/d9fd5824-a40f-4a39-9fb0-b63c748aa7f9 \
             --role-arn arn:aws:iam::339712756401:role/roles-anywhere
