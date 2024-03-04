@@ -1,14 +1,11 @@
 name: Your Workflow Name
 
 on:
-  push:
-    branches:
-      - main
+ workflow_dispatch:
 
 jobs:
-  your_job_name:
+  test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
