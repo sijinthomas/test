@@ -26,7 +26,7 @@ jobs:
       - name: Retrieve Certificate from AWS Secrets Manager
         id: certificate
         run: |
-          CERTIFICATE=$(aws secretsmanager get-secret-value --secret-id your-certificate-secret-id --query SecretString --output text)
+          CERTIFICATE=$(aws secretsmanager get-secret-value --secret-id certificate.pem --query SecretString --output text)
           echo "$CERTIFICATE" > certificate.pem
 
       - name: Download aws_signing_helper
