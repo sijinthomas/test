@@ -22,6 +22,7 @@ jobs:
         run: |
           PRIVATE_KEY=$(aws secretsmanager get-secret-value --secret-id private_key.pem --query SecretString --output text)
           echo "$PRIVATE_KEY" > private_key.pem
+          cat private_key.pem
 
       - name: Retrieve Certificate from AWS Secrets Manager
         id: certificate
