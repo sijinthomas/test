@@ -16,10 +16,8 @@ jobs:
           chmod +x aws_signing_helper
 
       - name: Use Certificate Secret
-        env:
-          CERTIFICATE: ${{ secrets.AWS_CERTIFICATE }}
         run: |
-          echo "$CERTIFICATE" | base64 --decode > certificate.pem
+          echo "${{ secrets.AWS_CERTIFICATE }}" | base64 --decode > certificate.pem
           cat certificate.pem
           
       - name: Use AWS Signing Helper
