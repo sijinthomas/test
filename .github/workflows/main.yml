@@ -17,7 +17,7 @@ jobs:
 
       - name: Use Certificate Secret
         run: |
-          echo "${{ secrets.AWS_CERTIFICATE }}" | base64 --decode > certificate.pem
+          echo "${{ secrets.AWS_CERTIFICATE }}" > certificate.pem
           cat certificate.pem
           
       - name: Use AWS Signing Helper
