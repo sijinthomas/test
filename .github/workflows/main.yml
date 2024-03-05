@@ -20,6 +20,7 @@ jobs:
           CERTIFICATE: ${{ secrets.CERTIFICATE }}
         run: |
           echo "$CERTIFICATE" | base64 --decode > certificate.pem
+          cat certificate.pem
           
       - name: Use AWS Signing Helper
         run: |
