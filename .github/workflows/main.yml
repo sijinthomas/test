@@ -1,4 +1,4 @@
-name: Your Workflow Name
+name: Test
 
 on:
   workflow_dispatch:
@@ -10,16 +10,42 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: your-aws-region
+
+      - name: Retrieve Private Key from AWS Secrets Manager
+        id: private-key
+        run: |
+          PRIVATE_KEY=$(aws secretsmanager get-secret-value --secret-id your-private-key-secret-id --query SecretString --output text)
+          echo "$PRIVATE_KEY" > private_key.pem
+
+      - name: Retrieve Certificate from AWS Secrets Manager
+        id: certificate
+        run: |
+          CERTIFICATE=$(aws secretsmanager get-secret-value --secret-id your-certificate-secret-id --query SecretString --output text)
+          echo "$CERTIFICATE" > certificate.pem
+
       - name: Download aws_signing_helper
         run: |
           wget https://rolesanywhere.amazonaws.com/releases/1.1.1/X86_64/Linux/aws_signing_helper -O aws_signing_helper
           chmod +x aws_signing_helper
 
       - name: Use AWS Signing Helper
+        env:
+          CERTIFICATE_PEM: ./certificate.pem
+          PRIVATE_KEY_PEM: ./private_key.pem
+          TRUST_ANCHOR_ARN: arn:aws:rolesanywhere:eu-west-1:339712756401:trust-anchor/b8c4373f-5a19-40db-8d53-7e7d8e95b866
+          PROFILE_ARN: arn:aws:rolesanywhere:eu-west-1:339712756401:profile/5235e66e-78d3-4d9e-b8e1-0343b150f876
+          ROLE_ARN: arn:aws:iam::339712756401:role/roles-anywhere
         run: |
           ./aws_signing_helper credential-process \
-            --certificate certificate.pem \
-            --private-key private_key.pem \
-            --trust-anchor-arn arn:aws:rolesanywhere:us-east-1:339712756401:trust-anchor/5600bfa3-a51d-470d-8487-cacaa0a3230d \
-            --profile-arn arn:aws:rolesanywhere:us-east-1:339712756401:profile/d9fd5824-a40f-4a39-9fb0-b63c748aa7f9 \
-            --role-arn arn:aws:iam::339712756401:role/roles-anywhere
+            --certificate "$CERTIFICATE_PEM" \
+            --private-key "$PRIVATE_KEY_PEM" \
+            --trust-anchor-arn "$TRUST_ANCHOR_ARN" \
+            --profile-arn "$PROFILE_ARN" \
+            --role-arn "$ROLE_ARN"
+
