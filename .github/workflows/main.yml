@@ -28,6 +28,7 @@ jobs:
         run: |
           CERTIFICATE=$(aws secretsmanager get-secret-value --secret-id certificate.pem --query SecretString --output text)
           echo "$CERTIFICATE" > certificate.pem
+          cat certificate.pem
 
       - name: Download aws_signing_helper
         run: |
