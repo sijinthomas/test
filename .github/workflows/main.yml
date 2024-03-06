@@ -18,12 +18,10 @@ jobs:
       - name: Use Certificate Secret
         run: |
           echo "${{ secrets.AWS_CERTIFICATE }}" > certificate.pem
-          cat certificate.pem
 
       - name: Use Private Key Secret
         run: |
           echo "${{ secrets.AWS_PRIVATE_KEY }}" > private_key.pem
-          cat private_key.pem
 
       - name: Use AWS Signing Helper
         run: |
