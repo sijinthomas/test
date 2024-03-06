@@ -1,4 +1,4 @@
-name: tEST
+name: Test
 
 on:
   workflow_dispatch:
@@ -19,12 +19,12 @@ jobs:
         run: |
           echo "${{ secrets.AWS_CERTIFICATE }}" > certificate.pem
           cat certificate.pem
-          
+
       - name: Use AWS Signing Helper
         run: |
           ./aws_signing_helper credential-process \
-            --certificate ${{ secrets.AWS_CERTIFICATE }} \
-            --private-key ${{ secrets.AWS_PRIVATE_KEY }} \
+            --certificate certificate.pem \
+            --private-key "${{ secrets.AWS_PRIVATE_KEY }}" \
             --trust-anchor-arn arn:aws:rolesanywhere:eu-west-1:339712756401:trust-anchor/b8c4373f-5a19-40db-8d53-7e7d8e95b866 \
             --profile-arn arn:aws:rolesanywhere:eu-west-1:339712756401:profile/5235e66e-78d3-4d9e-b8e1-0343b150f876 \
             --role-arn arn:aws:iam::339712756401:role/roles-anywhere
